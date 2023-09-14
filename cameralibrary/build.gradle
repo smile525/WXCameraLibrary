@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    // 插件提供的其他特性,@Parcelize、View binding and caching
+    id 'kotlin-android-extensions'
+    //jitpack库上传所需
+    id 'maven-publish'
+}
+
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName '1'
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true // 添加多密度矢量图形
+    }
+
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+            android.libraryVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "cameralibrary_${versionName}_${variant.buildType.name}.aar"
+                }
+            }
+        }
+        debug {
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // 这个配置是为了禁用除了parcelize外的其他功能
+    androidExtensions {
+        features = ["parcelize"]
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.core:core-ktx:$rootProject.ext.ktx_version"
+
+    implementation "androidx.recyclerview:recyclerview:$rootProject.ext.recyclerviewSdkVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompatSdkVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintlayoutSdkVersion"
+    implementation 'androidx.asynclayoutinflater:asynclayoutinflater:1.0.0'
+    implementation "com.google.android.material:material:$rootProject.ext.androidMaterialSdkVersion"
+
+    //图片预览
+    api 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    // 图片
+    compileOnly 'com.github.bumptech.glide:glide:3.7.0'
+
+    // 拍摄、录像核心类 https://github.com/natario1/CameraView
+    api 'com.otaliastudios:cameraview:2.7.2'
+
+    // 自制按钮进度 https://github.com/zhongjhATC/CircularProgressView
+    api 'com.github.zhongjhATC:CircularProgressView:1.8'
+
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication){
+                from components.release
+                //建议和github地址对应，否则对jitpack无效
+                groupId = "${groupId}"
+                //建议和github仓库名称对应，否则对jitpack无效
+                artifactId = "${artifactId}"
+                //建议和release的tag相同，否则对jitpack无效
+                version = "${versionName}"
+            }
+        }
+    }
+}
