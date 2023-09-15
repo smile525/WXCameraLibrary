@@ -136,7 +136,7 @@ public class ClickOrLongButton extends View {
      * 分段录制：当前最新的一段录制时间
      */
     private long mRecordedTimeSection;
-    private static final float PROGRESS_LIM_TO_FINISH_STARTING_ANIM = 0.1F;
+    private static final float PROGRESS_LIM_TO_FINISH_STARTING_ANIM = 0.08F;
     private int mBoundingBoxSize;
     private int mOutCircleWidth;
     private int mOuterCircleWidthInc;
@@ -329,9 +329,9 @@ public class ClickOrLongButton extends View {
     private void init() {
         touchable = recordable = true;
         // 整块
-        mBoundingBoxSize = DisplayMetricsUtils.dip2px(100.0F);
+        mBoundingBoxSize = DisplayMetricsUtils.dip2px(150.0F);
         // 外线宽度
-        mOutCircleWidth = DisplayMetricsUtils.dip2px(2.3F);
+        mOutCircleWidth = DisplayMetricsUtils.dip2px(4.3F);
         mOuterCircleWidthInc = DisplayMetricsUtils.dip2px(4.3F);
         mInnerCircleRadius = DisplayMetricsUtils.dip2px(32.0F);
 
@@ -420,12 +420,12 @@ public class ClickOrLongButton extends View {
         outBlackCirclePaint.setColor(colorBlackP40);
         outBlackCirclePaint.setAntiAlias(true);
         outBlackCirclePaint.setStyle(Style.STROKE);
-        outBlackCirclePaint.setStrokeWidth(1.0F);
+        outBlackCirclePaint.setStrokeWidth(0.5F);
         outMostBlackCirclePaint = new Paint();
         outMostBlackCirclePaint.setColor(colorBlackP80);
         outMostBlackCirclePaint.setAntiAlias(true);
         outMostBlackCirclePaint.setStyle(Style.STROKE);
-        outMostBlackCirclePaint.setStrokeWidth(1.0F);
+        outMostBlackCirclePaint.setStrokeWidth(0.5F);
         translucentPaint = new Paint();
         translucentPaint.setColor(colorTranslucent);
         translucentPaint.setAntiAlias(true);
