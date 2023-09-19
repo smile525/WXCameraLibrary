@@ -8,18 +8,15 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.myapplication2.configuration.Glide4Engine;
-import com.smile525.albumcamerarecorder.preview.BasePreviewActivity;
 import com.smile525.albumcamerarecorder.settings.CameraSetting;
 import com.smile525.albumcamerarecorder.settings.GlobalSetting;
 import com.smile525.albumcamerarecorder.settings.MultiMediaSetting;
 import com.smile525.common.entity.LocalFile;
 import com.smile525.common.entity.MediaExtraInfo;
-import com.smile525.common.entity.MultiMedia;
 import com.smile525.common.entity.SaveStrategy;
 import com.smile525.common.enums.MimeType;
 import com.smile525.common.utils.MediaUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,13 +35,16 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initCamera();
+                startShooting();
             }
 
         });
     }
 
-    private void initCamera() {
+    /**
+     * 启动拍摄
+     */
+    private void startShooting() {
 // 拍摄有关设置
         CameraSetting cameraSetting = new CameraSetting();
         // 支持的类型：图片，视频
@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         // 开启拍摄功能
         mGlobalSetting.cameraSetting(cameraSetting);
 
-        Log.e("getPackageName():","getPackageName:::"+getPackageName());
+        Log.e("getPackageName():", "getPackageName:::" + getPackageName());
 
         mGlobalSetting
                 // 设置路径和7.0保护路径等等
-                .allStrategy(new SaveStrategy(false, getPackageName()+".fileprovider", "aabb"))
+                .allStrategy(new SaveStrategy(false, getPackageName() + ".fileprovider", "photo"))
                 // for glide-V4
                 .imageEngine(new Glide4Engine())
                 .isImageEdit(false)

@@ -277,7 +277,7 @@ public class BaseCameraPicturePresenter
                     }
                     // 移动文件,获取文件名称
                     String newFileName = item.getPath().substring(item.getPath().lastIndexOf(File.separator));
-                    File newFile = pictureMediaStoreCompat.createFile(newFileName, 0, false);
+                    File newFile = pictureMediaStoreCompat.createFile(newFileName, 0, true);
                     // new localFile
                     LocalFile localFile = new LocalFile();
                     localFile.setPath(newFile.getAbsolutePath());

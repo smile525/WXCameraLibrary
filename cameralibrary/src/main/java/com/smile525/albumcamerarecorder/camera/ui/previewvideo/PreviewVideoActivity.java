@@ -223,7 +223,7 @@ public class PreviewVideoActivity extends AppCompatActivity {
         if (mLocalFile.getPath() != null && mGlobalSpec.getVideoCompressCoordinator() != null) {
             // 获取文件名称
             String newFileName = mLocalFile.getPath().substring(mLocalFile.getPath().lastIndexOf(File.separator));
-            File newFile = mVideoMediaStoreCompat.createFile(newFileName, 1, false);
+            File newFile = mVideoMediaStoreCompat.createFile(newFileName, 1, true);
             mGlobalSpec.getVideoCompressCoordinator().setVideoCompressListener(PreviewVideoActivity.this.getClass(), new VideoEditListener() {
                 @Override
                 public void onFinish() {
@@ -274,7 +274,7 @@ public class PreviewVideoActivity extends AppCompatActivity {
                 }
                 // 获取文件名称
                 String newFileName = mLocalFile.getPath().substring(mLocalFile.getPath().lastIndexOf(File.separator));
-                File newFile = mVideoMediaStoreCompat.createFile(newFileName, 1, false);
+                File newFile = mVideoMediaStoreCompat.createFile(newFileName, 1, true);
                 FileUtil.move(new File(mLocalFile.getPath()), newFile);
                 return newFile;
             }
