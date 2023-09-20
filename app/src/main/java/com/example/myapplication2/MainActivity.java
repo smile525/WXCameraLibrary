@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         mGlobalSetting
                 // 设置路径和7.0保护路径等等
-                .allStrategy(new SaveStrategy(false, getPackageName() + ".fileprovider", "photo"))
+                .allStrategy(new SaveStrategy(false, "", "tim"))
                 // for glide-V4
                 .imageEngine(new Glide4Engine())
                 .isImageEdit(false)
