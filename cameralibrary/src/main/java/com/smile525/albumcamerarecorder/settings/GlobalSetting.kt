@@ -189,6 +189,11 @@ internal constructor(private val multiMediaSetting: MultiMediaSetting, mimeTypes
         return this
     }
 
+    override fun hasSurePhoto(boolean: Boolean): GlobalSetting  {
+        mGlobalSpec.hasSurePhoto(boolean)
+        return this
+    }
+
     override fun forResult(requestCode: Int) {
         mGlobalSpec.requestCode = requestCode
         // 回调监听设置null

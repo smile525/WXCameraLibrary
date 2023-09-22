@@ -832,18 +832,29 @@ public abstract class BaseCameraFragment
         globalSpec.getImageEngine().loadUriImage(myContext, getSinglePhotoView(), bitmapData.getUri());
         getCameraView().close();
 
-        // : 2023/9/14 处理无需展示控制按钮
-//        getPhotoVideoLayout().startTipAlphaAnimation();
-//        getPhotoVideoLayout().startShowLeftRightButtonsAnimator();
-
         // 设置当前模式是图片模式
         getCameraStateManagement().setState(getCameraStateManagement().getPictureComplete());
 
         // 隐藏拍照按钮
         getPhotoVideoLayout().getViewHolder().btnClickOrLong.setVisibility(View.INVISIBLE);
 
-        // : 2023/9/14 处理直接返回结果，无需预览图片
-        getCameraStateManagement().pvLayoutCommit();
+        // 隐藏拍照提示
+        getPhotoVideoLayout().getViewHolder().tvTip.setVisibility(View.GONE);
+        
+        // 隐藏拍照按钮
+        if (getCloseView() != null) {
+            getCloseView().setVisibility(View.GONE);
+        }
+
+        if (globalSpec.getHasSurePhoto()) {
+            // : 2023/9/14 处理无需展示控制按钮
+            getPhotoVideoLayout().startTipAlphaAnimation();
+            getPhotoVideoLayout().startShowLeftRightButtonsAnimator();
+        } else {
+            // : 2023/9/14 处理直接返回结果，无需预览图片
+            getCameraStateManagement().pvLayoutCommit();
+        }
+
     }
 
     /**
@@ -923,6 +934,11 @@ public abstract class BaseCameraFragment
         getPhotoVideoLayout().reset();
         // 恢复底部按钮操作模式
         initPvLayoutButtonFeatures();
+
+        // 显示关闭按钮
+        if (getCloseView() != null) {
+            getCloseView().setVisibility(View.VISIBLE);
+        }
     }
 
     /**

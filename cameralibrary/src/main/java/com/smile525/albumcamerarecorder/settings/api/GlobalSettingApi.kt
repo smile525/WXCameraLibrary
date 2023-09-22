@@ -244,4 +244,9 @@ interface GlobalSettingApi {
      * @param position 当前数据的索引
      */
     fun openPreviewPath(activity: Activity, list: ArrayList<String>, position: Int)
+
+    /**
+     * 拍照是否需要确认照片
+     */
+    fun hasSurePhoto(boolean: Boolean): GlobalSetting
 }

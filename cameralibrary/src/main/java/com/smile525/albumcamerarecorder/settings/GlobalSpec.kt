@@ -46,6 +46,11 @@ object GlobalSpec {
     var hasInited = false
 
     /**
+     * 拍照是否需要确认
+     */
+    var hasSurePhoto = false
+
+    /**
      * 默认从第几个开始
      */
     var defaultPosition = 0
@@ -159,6 +164,10 @@ object GlobalSpec {
         this.mimeTypeSet = mimeTypeSet
     }
 
+    fun hasSurePhoto(boolean: Boolean){
+        this.hasSurePhoto = boolean;
+    }
+
     /**
      * @return 是否开启了视频压缩功能
      */
@@ -191,6 +200,7 @@ object GlobalSpec {
         videoStrategy = null
         audioStrategy = null
         hasInited = true
+        hasSurePhoto = false
         imageEngine = GlideEngine()
         cutscenesEnabled = true
         orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

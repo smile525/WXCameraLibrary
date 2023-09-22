@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 .allStrategy(new SaveStrategy(false, "", "tim"))
                 // for glide-V4
                 .imageEngine(new Glide4Engine())
+                //配置拍照是否需要确认照片再返回
+                .hasSurePhoto(true)
                 .isImageEdit(false)
                 // 最大5张图片、最大3个视频、最大1个音频
                 .maxSelectablePerMediaType(null,

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,7 +92,7 @@ public class CameraFragment extends BaseCameraFragment<CameraStateManagement, Ba
     @Nullable
     @Override
     public View getCloseView() {
-        return mViewHolder.imgClose;
+        return mViewHolder.ctvClose;
     }
 
     @Nullable
@@ -140,7 +141,7 @@ public class CameraFragment extends BaseCameraFragment<CameraStateManagement, Ba
         RecyclerView rlPhoto;
         View vLine1;
         View vLine2;
-        ImageView imgClose;
+        TextView ctvClose;
         CameraView cameraView;
         ConstraintLayout clMenu;
 
@@ -154,7 +155,7 @@ public class CameraFragment extends BaseCameraFragment<CameraStateManagement, Ba
             this.rlPhoto = rootView.findViewById(R.id.rlPhoto);
             this.vLine1 = rootView.findViewById(R.id.vLine1);
             this.vLine2 = rootView.findViewById(R.id.vLine2);
-            this.imgClose = rootView.findViewById(R.id.imgClose);
+            this.ctvClose = rootView.findViewById(R.id.ctvClose);
             this.cameraView = rootView.findViewById(R.id.cameraView);
             this.clMenu = rootView.findViewById(R.id.clMenu);
         }

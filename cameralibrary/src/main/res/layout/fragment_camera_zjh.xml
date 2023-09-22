@@ -59,20 +59,9 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imgSwitch"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_flash_on"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/imgSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_camera_zjh"
             tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -108,23 +97,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center">
+        android:orientation="horizontal">
 
         <com.smile525.albumcamerarecorder.camera.widget.PhotoVideoLayout
             android:id="@+id/pvLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:contentDescription="底部功能按钮"
             tools:ignore="HardcodedText" />
 
-        <ImageView
-            android:id="@+id/imgClose"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="60dp"
-            app:srcCompat="@drawable/ic_camera_down"
-            tools:ignore="ContentDescription" />
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ctvClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="取消"
+                android:textColor="@color/white"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/imgSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:padding="15dp"
+                app:srcCompat="@mipmap/t_icon_change"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 </com.smile525.albumcamerarecorder.widget.childclickable.ChildClickableRelativeLayout>

@@ -339,6 +339,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
      * 显示左右两边的按钮
      */
     public void startShowLeftRightButtonsAnimator() {
+        viewHolder.tvTip.setVisibility(GONE);
         // 显示提交和取消按钮
         viewHolder.btnConfirm.setVisibility(VISIBLE);
         viewHolder.btnCancel.setVisibility(VISIBLE);
@@ -401,15 +402,15 @@ public abstract class BaseOperationLayout extends FrameLayout {
     }
 
     /**
-     * 提示文本框 - 浮现渐现动画
+     * 提示文本框 - 浮现渐现动画（暂时不用）
      */
     public void startTipAlphaAnimation() {
-        if (mIsFirst) {
-            ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
-            animatorTxtTip.setDuration(500);
-            animatorTxtTip.start();
-            mIsFirst = false;
-        }
+//        if (mIsFirst) {
+//            ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
+//            animatorTxtTip.setDuration(500);
+//            animatorTxtTip.start();
+//            mIsFirst = false;
+//        }
     }
 
     /**
@@ -453,6 +454,8 @@ public abstract class BaseOperationLayout extends FrameLayout {
         viewHolder.btnConfirm.setVisibility(View.GONE);
         // 显示第一层的view
         viewHolder.btnClickOrLong.setVisibility(View.VISIBLE);
+        //
+        viewHolder.tvTip.setVisibility(VISIBLE);
     }
 
     /**
@@ -492,6 +495,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
 
     /**
      * 设置中间按钮是否可点击
+     *
      * @param enabled 是否可点击
      */
     public void setClickOrLongEnable(boolean enabled) {
@@ -538,7 +542,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
         public CircularProgress btnCancel;
         public CircularProgress btnConfirm;
         public ClickOrLongButton btnClickOrLong;
-        TextView tvTip;
+        public TextView tvTip;
         public TextView tvSectionRecord;
 
         public ViewHolder(View rootView) {

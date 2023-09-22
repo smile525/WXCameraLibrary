@@ -36,8 +36,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/btnConfirm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnConfirm"
-            app:srcCompat="@drawable/ca_ic_combined_shape"
-            android:background="@drawable/shape_circle_grey"
+            android:src="@mipmap/t_icon_return"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -48,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/btnConfirm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnConfirm"
-            app:srcCompat="@drawable/ic_camera_confirm"
+            android:src="@mipmap/t_icon_finish"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

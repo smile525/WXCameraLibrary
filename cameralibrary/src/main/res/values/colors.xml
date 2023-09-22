@@ -25,7 +25,7 @@
     <color name="spinner_bottom_line_color">#80000000</color>
 
     <color name="z_thumbnail_placeholder">#EAEEF4</color>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#D6372B</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 </resources>
