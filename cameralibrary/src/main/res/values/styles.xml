@@ -35,7 +35,7 @@
         <!-- 按钮外圈颜色 -->
         <item name="click.long.button.round.border">#ffffffff</item>
         <!-- 按钮内圈长按中的颜色 -->
-        <item name="click.long.button.inner.circle.in.operation">@color/blue_primary</item>
+        <item name="click.long.button.inner.circle.in.operation">#FF00A31F</item>
         <!-- 按钮内圈默认的颜色 -->
         <item name="click.long.button.inner.circle.no.operation">#99ffffff</item>
 
@@ -119,7 +119,7 @@
         <!-- 按钮外圈颜色 -->
         <item name="click.long.button.round.border">#ffffffff</item>
         <!-- 按钮内圈长按中的颜色 -->
-        <item name="click.long.button.inner.circle.in.operation">@color/dracula_primary</item>
+        <item name="click.long.button.inner.circle.in.operation">#FF00A31F</item>
         <!-- 按钮内圈默认的颜色 -->
         <item name="click.long.button.inner.circle.no.operation">#99ffffff</item>
 
