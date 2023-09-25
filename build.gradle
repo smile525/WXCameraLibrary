@@ -41,7 +41,7 @@ ext {
     constraintlayoutSdkVersion = '2.1.4'
     documentfileSdkVersion = '1.0.1'
     androidMaterialSdkVersion = '1.2.1'
-    minSdkVersion = 21
+    minSdkVersion = 19
     targetSdkVersion = 33
 
     junitVersion = '4.12'
