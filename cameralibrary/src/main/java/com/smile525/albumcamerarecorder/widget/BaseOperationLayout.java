@@ -6,8 +6,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +17,9 @@ import androidx.annotation.Nullable;
 
 import com.smile525.albumcamerarecorder.R;
 import com.smile525.albumcamerarecorder.camera.listener.ClickOrLongListener;
+import com.smile525.albumcamerarecorder.camera.util.LogUtil;
 import com.smile525.albumcamerarecorder.widget.clickorlongbutton.ClickOrLongButton;
+import com.smile525.common.listener.OnMoreClickListener;
 import com.zhongjh.circularprogressview.CircularProgress;
 import com.zhongjh.circularprogressview.CircularProgressListener;
 
@@ -132,8 +136,8 @@ public abstract class BaseOperationLayout extends FrameLayout {
         // 获取高的尺寸
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         heightSize = heightSize / 3;
-        mAnimatorConfirm = ObjectAnimator.ofFloat(viewHolder.btnConfirm, "translationX", -widthSize / 4F, 0);
-        mAnimatorCancel = ObjectAnimator.ofFloat(viewHolder.btnCancel, "translationX", widthSize / 4F, 0);
+        mAnimatorConfirm = ObjectAnimator.ofFloat(viewHolder.btnConfirm, "translationX", -widthSize / 5F, 0);
+        mAnimatorCancel = ObjectAnimator.ofFloat(viewHolder.btnCancel, "translationX", widthSize / 5F, 0);
 
         setMeasuredDimension(widthSize, heightSize);
         // 传递新创建的宽高给子控件
@@ -154,24 +158,24 @@ public abstract class BaseOperationLayout extends FrameLayout {
         viewHolder.btnConfirm.setVisibility(GONE);
 
         // 定制样式 .确认按钮,修改主色调
-        viewHolder.btnConfirm.setPrimaryColor(R.color.operation_background);
+//        viewHolder.btnConfirm.setPrimaryColor(R.color.operation_background);
         // 修改成铺满样式
-        viewHolder.btnConfirm.setFullStyle(true);
+//        viewHolder.btnConfirm.setFullStyle(true);
         // 修改图片
-        viewHolder.btnConfirm.setFunctionImage(R.drawable.ic_baseline_done,
-                R.drawable.avd_done_to_stop, R.drawable.avd_stop_to_done);
+//        viewHolder.btnConfirm.setFunctionImage(R.drawable.ic_baseline_done,
+//                R.drawable.avd_done_to_stop, R.drawable.avd_stop_to_done);
         // 修改进度颜色
-        viewHolder.btnConfirm.setFullProgressColor(R.color.click_button_inner_circle_no_operation_interval);
+//        viewHolder.btnConfirm.setFullProgressColor(R.color.click_button_inner_circle_no_operation_interval);
 
         // 定制样式 .取消按钮 修改主色调
-        viewHolder.btnCancel.setPrimaryColor(R.color.operation_background);
+//        viewHolder.btnCancel.setPrimaryColor(R.color.operation_background);
         // 修改成铺满样式
-        viewHolder.btnCancel.setFullStyle(true);
+//        viewHolder.btnCancel.setFullStyle(true);
         // 修改图片
-        viewHolder.btnCancel.setFunctionImage(R.drawable.ic_baseline_keyboard_arrow_left_24,
-                R.drawable.avd_done_to_stop, R.drawable.avd_stop_to_done);
+//        viewHolder.btnCancel.setFunctionImage(R.drawable.ic_baseline_keyboard_arrow_left_24,
+//                R.drawable.avd_done_to_stop, R.drawable.avd_stop_to_done);
         // 取消进度模式
-        viewHolder.btnCancel.setProgressMode(false);
+//        viewHolder.btnCancel.setProgressMode(false);
 
         initListener();
     }
@@ -209,7 +213,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
                 if (mClickOrLongListener != null) {
                     mClickOrLongListener.onLongClickShort(time);
                 }
-                startTipAlphaAnimation();
+                endTipAlphaAnimation();
             }
 
             @Override
@@ -225,7 +229,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
                 if (mClickOrLongListener != null) {
                     mClickOrLongListener.onLongClickEnd(time);
                 }
-                startTipAlphaAnimation();
+                endTipAlphaAnimation();
             }
 
             @Override
@@ -255,76 +259,93 @@ public abstract class BaseOperationLayout extends FrameLayout {
      * 返回事件
      */
     private void btnCancelListener() {
-        viewHolder.btnCancel.setCircularProgressListener(new CircularProgressListener() {
-
+        viewHolder.btnCancel.setOnClickListener(new OnClickListener() {
             @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onDone() {
-
-            }
-
-            @Override
-            public void onStop() {
-
-            }
-
-            @Override
-            public void onClickByGeneralMode() {
+            public void onClick(View view) {
                 if (mOperateListener != null) {
                     mOperateListener.cancel();
                 }
-                startTipAlphaAnimation();
-            }
-
-            @Override
-            public void onClickByProgressMode() {
+                endTipAlphaAnimation();
             }
         });
+//        viewHolder.btnCancel.setCircularProgressListener(new CircularProgressListener() {
+//
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void onDone() {
+//
+//            }
+//
+//            @Override
+//            public void onStop() {
+//
+//            }
+//
+//            @Override
+//            public void onClickByGeneralMode() {
+//                if (mOperateListener != null) {
+//                    mOperateListener.cancel();
+//                }
+//                startTipAlphaAnimation();
+//            }
+//
+//            @Override
+//            public void onClickByProgressMode() {
+//            }
+//        });
     }
 
     /**
      * 提交事件
      */
     private void btnConfirmListener() {
-        viewHolder.btnConfirm.setCircularProgressListener(new CircularProgressListener() {
+        viewHolder.btnConfirm.setOnClickListener(new OnMoreClickListener() {
             @Override
-            public void onStart() {
-                if (mOperateListener != null) {
-                    mOperateListener.startProgress();
-                }
-            }
-
-            @Override
-            public void onDone() {
-                if (mOperateListener != null) {
-                    mOperateListener.doneProgress();
-                }
-            }
-
-            @Override
-            public void onStop() {
-                if (mOperateListener != null) {
-                    mOperateListener.stopProgress();
-                }
-            }
-
-            @Override
-            public void onClickByGeneralMode() {
-
-            }
-
-            @Override
-            public void onClickByProgressMode() {
+            public void onListener(@NonNull View v) {
                 if (mOperateListener != null) {
                     mOperateListener.confirm();
                 }
-                startTipAlphaAnimation();
             }
         });
+//        viewHolder.btnConfirm.setCircularProgressListener(new CircularProgressListener() {
+//            @Override
+//            public void onStart() {
+//                if (mOperateListener != null) {
+//                    mOperateListener.startProgress();
+//                }
+//            }
+//
+//            @Override
+//            public void onDone() {
+//                if (mOperateListener != null) {
+//                    mOperateListener.doneProgress();
+//                }
+//            }
+//
+//            @Override
+//            public void onStop() {
+//                if (mOperateListener != null) {
+//                    mOperateListener.stopProgress();
+//                }
+//            }
+//
+//            @Override
+//            public void onClickByGeneralMode() {
+//
+//            }
+//
+//            @Override
+//            public void onClickByProgressMode() {
+//                if (mOperateListener != null) {
+//                    mOperateListener.confirm();
+//                }
+//                startTipAlphaAnimation();
+//            }
+//        });
     }
 
     /**
@@ -339,7 +360,6 @@ public abstract class BaseOperationLayout extends FrameLayout {
      * 显示左右两边的按钮
      */
     public void startShowLeftRightButtonsAnimator() {
-        viewHolder.tvTip.setVisibility(GONE);
         // 显示提交和取消按钮
         viewHolder.btnConfirm.setVisibility(VISIBLE);
         viewHolder.btnCancel.setVisibility(VISIBLE);
@@ -405,10 +425,24 @@ public abstract class BaseOperationLayout extends FrameLayout {
      * 提示文本框 - 浮现渐现动画（暂时不用）
      */
     public void startTipAlphaAnimation() {
+        LogUtil.e("隐藏提示");
 //        if (mIsFirst) {
-//            ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
-//            animatorTxtTip.setDuration(500);
-//            animatorTxtTip.start();
+            ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
+            animatorTxtTip.setDuration(500);
+            animatorTxtTip.start();
+//            mIsFirst = false;
+//        }
+    }
+
+    /**
+     * 提示文本框 - 浮现渐现动画（暂时不用）
+     */
+    public void endTipAlphaAnimation() {
+        LogUtil.e("显示提示");
+//        if (mIsFirst) {
+        ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 0f, 1f);
+        animatorTxtTip.setDuration(500);
+        animatorTxtTip.start();
 //            mIsFirst = false;
 //        }
     }
@@ -455,7 +489,7 @@ public abstract class BaseOperationLayout extends FrameLayout {
         // 显示第一层的view
         viewHolder.btnClickOrLong.setVisibility(View.VISIBLE);
         //
-        viewHolder.tvTip.setVisibility(VISIBLE);
+        endTipAlphaAnimation();
     }
 
     /**
@@ -515,32 +549,32 @@ public abstract class BaseOperationLayout extends FrameLayout {
     public void invalidateClickOrLongButton() {
         viewHolder.btnClickOrLong.invalidate();
     }
-
-    /**
-     * 是否启用进度模式
-     */
-    public void setProgressMode(boolean isProgress) {
-        viewHolder.btnConfirm.setProgressMode(isProgress);
-    }
-
-    /**
-     * @return 获取当前是否进度模式
-     */
-    public boolean getProgressMode() {
-        return viewHolder.btnConfirm.mIsProgress;
-    }
-
-    /**
-     * 重置btnConfirm
-     */
-    public void resetConfirm() {
-        viewHolder.btnConfirm.reset();
-    }
+//
+//    /**
+//     * 是否启用进度模式
+//     */
+//    public void setProgressMode(boolean isProgress) {
+//        viewHolder.btnConfirm.setProgressMode(isProgress);
+//    }
+//
+//    /**
+//     * @return 获取当前是否进度模式
+//     */
+//    public boolean getProgressMode() {
+//        return viewHolder.btnConfirm.mIsProgress;
+//    }
+//
+//    /**
+//     * 重置btnConfirm
+//     */
+//    public void resetConfirm() {
+//        viewHolder.btnConfirm.reset();
+//    }
 
     public static class ViewHolder {
         View rootView;
-        public CircularProgress btnCancel;
-        public CircularProgress btnConfirm;
+        public ImageView btnCancel;
+        public ImageView btnConfirm;
         public ClickOrLongButton btnClickOrLong;
         public TextView tvTip;
         public TextView tvSectionRecord;

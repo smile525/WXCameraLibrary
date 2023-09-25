@@ -66,8 +66,8 @@
 
     <!-- endregion -->
 
-    <string name="z_multi_library_light_touch_take_long_press_camera">轻触拍照，长按摄像</string>
-    <string name="z_multi_library_light_touch_take">轻触拍照</string>
+    <string name="z_multi_library_light_touch_take_long_press_camera">点击拍照，长按摄像</string>
+    <string name="z_multi_library_light_touch_take">点击拍照</string>
     <string name="z_multi_library_long_press_camera">长按摄像</string>
     <string name="z_multi_library_light_touch_camera">轻触摄像</string>
     <string name="z_multi_library_touch_your_suspension">轻触暂停</string>

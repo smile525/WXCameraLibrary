@@ -139,7 +139,7 @@ public class ClickOrLongButton extends View {
     private static final float PROGRESS_LIM_TO_FINISH_STARTING_ANIM = 0.08F;
     private int mBoundingBoxSize;
     private int mOutCircleWidth;
-    private int mOuterCircleWidthInc;
+    //    private int mOuterCircleWidthInc;
     private float mInnerCircleRadius;
 
     private TouchTimeHandler touchTimeHandler;
@@ -147,8 +147,8 @@ public class ClickOrLongButton extends View {
     private boolean recordable;
 
     private Paint centerCirclePaint;
-    private Paint outBlackCirclePaint;
-    private Paint outMostBlackCirclePaint;
+    //    private Paint outBlackCirclePaint;
+//    private Paint outMostBlackCirclePaint;
     private float innerCircleRadiusToDraw;
     /**
      * 外圈的画布
@@ -288,22 +288,28 @@ public class ClickOrLongButton extends View {
 //            Log.d(TAG, "percentInDegree:" + percentInDegree);
 
             if (percent <= FULL_PROGRESS) {
+                outMostCircleRadius = DisplayMetricsUtils.dip2px(40.0F);
+//                // 外线宽度
+//                mOutCircleWidth = DisplayMetricsUtils.dip2px(8.3F);
                 if (percent <= PROGRESS_LIM_TO_FINISH_STARTING_ANIM) {
                     float calPercent = percent / PROGRESS_LIM_TO_FINISH_STARTING_ANIM;
                     float outIncDis = outBlackCircleRadiusInc * calPercent;
-                    float curOutCircleWidth = mOutCircleWidth + mOuterCircleWidthInc * calPercent;
-                    processBarPaint.setStrokeWidth(curOutCircleWidth);
-                    outProcessCirclePaint.setStrokeWidth(curOutCircleWidth);
-                    outProcessIntervalCirclePaint.setStrokeWidth(curOutCircleWidth);
-                    outMostWhiteCirclePaint.setStrokeWidth(curOutCircleWidth);
-                    outBlackCircleRadius = (outMostCircleRadius + outIncDis - curOutCircleWidth / 2.0F);
-                    outMostBlackCircleRadius = (curOutCircleWidth / 2.0F + (outMostCircleRadius + outIncDis));
+                    float curOutCircleWidth = mOutCircleWidth + 30;
+//                    processBarPaint.setStrokeWidth(curOutCircleWidth);
+//                    outMostWhiteCirclePaint.setStrokeWidth(curOutCircleWidth);
+
+//                    outProcessCirclePaint.setStrokeWidth(curOutCircleWidth);
+//                    outProcessIntervalCirclePaint.setStrokeWidth(curOutCircleWidth);
+//                    outBlackCircleRadius = (outMostCircleRadius + outIncDis - curOutCircleWidth / 2.0F);
+//                    outMostBlackCircleRadius = (curOutCircleWidth / 2.0F + (outMostCircleRadius + outIncDis));
                     outMostCircleRect = new RectF(centerX - outMostCircleRadius - outIncDis, centerY - outMostCircleRadius - outIncDis, centerX + outMostCircleRadius + outIncDis, centerY + outMostCircleRadius + outIncDis);
-                    translucentCircleRadius = (int) (outIncDis + outMostCircleRadius);
-                    innerCircleRadiusToDraw = calPercent * innerCircleRadiusWhenRecord;
+//                    translucentCircleRadius = (int) (outIncDis + outMostCircleRadius);
+                    innerCircleRadiusToDraw = calPercent * (innerCircleRadiusWhenRecord / 3f);
                 }
                 invalidate();
             } else {
+                // 外线宽度
+//                mOutCircleWidth = DisplayMetricsUtils.dip2px(8.3F);
                 Log.d(TAG, "满足100" + (mRecordedTime / timeLimitInMils >= FULL_PROGRESS));
                 step++;
                 refreshView();
@@ -329,26 +335,31 @@ public class ClickOrLongButton extends View {
     private void init() {
         touchable = recordable = true;
         // 整块
-        mBoundingBoxSize = DisplayMetricsUtils.dip2px(150.0F);
+        mBoundingBoxSize = DisplayMetricsUtils.dip2px(120.0F);
         // 外线宽度
-        mOutCircleWidth = DisplayMetricsUtils.dip2px(4.3F);
-        mOuterCircleWidthInc = DisplayMetricsUtils.dip2px(4.3F);
-        mInnerCircleRadius = DisplayMetricsUtils.dip2px(32.0F);
+        mOutCircleWidth = DisplayMetricsUtils.dip2px(8.3F);
+//        mOuterCircleWidthInc = DisplayMetricsUtils.dip2px(0F);
+        mInnerCircleRadius = DisplayMetricsUtils.dip2px(36.0F);
 
-        // 调取样式中的颜色
+        // 外圆的颜色
         TypedArray arrayRoundBorder = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.click_long_button_round_border});
         int defaultRoundBorderColor = ResourcesCompat.getColor(
                 getResources(), R.color.click_long_button_round_border,
                 getContext().getTheme());
+
+        //内圆的录制中时颜色
         TypedArray arrayInnerCircleInOperation = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.click_long_button_inner_circle_in_operation});
         int defaultInnerCircleInOperationColor = ResourcesCompat.getColor(
                 getResources(), R.color.click_long_button_inner_circle_in_operation,
                 getContext().getTheme());
+
+        //内圆的未录制时颜色
         TypedArray arrayInnerCircleNoOperation = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.click_long_button_inner_circle_no_operation});
         int defaultInnerCircleNoOperationColor = ResourcesCompat.getColor(
                 getResources(), R.color.click_long_button_inner_circle_no_operation,
                 getContext().getTheme());
 
+        //外圈的分段录制间隔
         TypedArray arrayInnerCircleNoOperationInterval = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.click_button_inner_circle_in_operation_interval});
         int defaultInnerCircleNoOperationColorInterval = ResourcesCompat.getColor(
                 getResources(), R.color.click_button_inner_circle_no_operation_interval,
@@ -416,16 +427,16 @@ public class ClickOrLongButton extends View {
         centerCirclePaint.setColor(colorWhiteP60);
         centerCirclePaint.setAntiAlias(true);
         centerCirclePaint.setStyle(Style.FILL_AND_STROKE);
-        outBlackCirclePaint = new Paint();
-        outBlackCirclePaint.setColor(colorBlackP40);
-        outBlackCirclePaint.setAntiAlias(true);
-        outBlackCirclePaint.setStyle(Style.STROKE);
-        outBlackCirclePaint.setStrokeWidth(0.5F);
-        outMostBlackCirclePaint = new Paint();
-        outMostBlackCirclePaint.setColor(colorBlackP80);
-        outMostBlackCirclePaint.setAntiAlias(true);
-        outMostBlackCirclePaint.setStyle(Style.STROKE);
-        outMostBlackCirclePaint.setStrokeWidth(0.5F);
+//        outBlackCirclePaint = new Paint();
+//        outBlackCirclePaint.setColor(colorBlackP40);
+//        outBlackCirclePaint.setAntiAlias(true);
+//        outBlackCirclePaint.setStyle(Style.STROKE);
+//        outBlackCirclePaint.setStrokeWidth(0.5F);
+//        outMostBlackCirclePaint = new Paint();
+//        outMostBlackCirclePaint.setColor(colorBlackP80);
+//        outMostBlackCirclePaint.setAntiAlias(true);
+//        outMostBlackCirclePaint.setStyle(Style.STROKE);
+//        outMostBlackCirclePaint.setStrokeWidth(0.5F);
         translucentPaint = new Paint();
         translucentPaint.setColor(colorTranslucent);
         translucentPaint.setAntiAlias(true);
@@ -435,7 +446,7 @@ public class ClickOrLongButton extends View {
         outMostCircleRadius = DisplayMetricsUtils.dip2px(37.0F);
         outBlackCircleRadiusInc = DisplayMetricsUtils.dip2px(7.0F);
         innerCircleRadiusWhenRecord = DisplayMetricsUtils.dip2px(35.0F);
-        innerCircleRadiusToDraw = mInnerCircleRadius;
+        innerCircleRadiusToDraw = (mInnerCircleRadius / 10f);
         outBlackCircleRadius = (outMostCircleRadius - mOutCircleWidth / 2.0F);
         outMostBlackCircleRadius = (outMostCircleRadius + mOutCircleWidth / 2.0F);
         startAngle270 = 270.0F;
@@ -452,7 +463,7 @@ public class ClickOrLongButton extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawCircle(centerX, centerY, translucentCircleRadius, translucentPaint);
+//        canvas.drawCircle(centerX, centerY, translucentCircleRadius, translucentPaint);
 
         //center white-p40 circle  中心点+半径32，所以直接64就是内圈的宽高度了
         canvas.drawCircle(centerX, centerY, innerCircleRadiusToDraw, centerCirclePaint);
@@ -464,18 +475,18 @@ public class ClickOrLongButton extends View {
         canvas.drawArc(outMostCircleRect, startAngle270, percentInDegree, false, processBarPaint);
 
         // 静止状态时的外圈进度
-        canvas.drawArc(outMostCircleRect, startAngle270, mCurrentSumNumberDegrees, false, outProcessCirclePaint);
+//        canvas.drawArc(outMostCircleRect, startAngle270, mCurrentSumNumberDegrees, false, outProcessCirclePaint);
 //        Log.d(TAG, "onDraw percentInDegree" + percentInDegree);
 //        Log.d(TAG, "onDraw mCurrentSumNumberDegrees" + mCurrentSumNumberDegrees);
 
         // 从这个顺序来看，即是从270为开始
         for (Float item : mCurrentLocation) {
-            canvas.drawArc(outMostCircleRect, item, 3, false, outProcessIntervalCirclePaint);
+//            canvas.drawArc(outMostCircleRect, item, 3, false, outProcessIntervalCirclePaint);
             Log.d(TAG, "canvas.drawArc " + item);
         }
 
-        canvas.drawCircle(centerX, centerY, outBlackCircleRadius, outBlackCirclePaint);
-        canvas.drawCircle(centerX, centerY, outMostBlackCircleRadius, outMostBlackCirclePaint);
+//        canvas.drawCircle(centerX, centerY, outBlackCircleRadius, outBlackCirclePaint);
+//        canvas.drawCircle(centerX, centerY, outMostBlackCircleRadius, outMostBlackCirclePaint);
     }
 
     @Override

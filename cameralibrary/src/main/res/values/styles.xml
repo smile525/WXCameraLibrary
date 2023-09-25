@@ -33,11 +33,11 @@
 
         <!-- 录制的按钮样式 -->
         <!-- 按钮外圈颜色 -->
-        <item name="click.long.button.round.border">#ffffffff</item>
+        <item name="click.long.button.round.border">#EEDCDCDC</item>
         <!-- 按钮内圈长按中的颜色 -->
         <item name="click.long.button.inner.circle.in.operation">#FF00A31F</item>
         <!-- 按钮内圈默认的颜色 -->
-        <item name="click.long.button.inner.circle.no.operation">#99ffffff</item>
+        <item name="click.long.button.inner.circle.no.operation">#fff</item>
 
         <!-- 展示视频界面的样式 -->
         <!-- 提交按钮的文字的颜色 -->

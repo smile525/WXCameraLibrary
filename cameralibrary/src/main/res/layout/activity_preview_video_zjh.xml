@@ -21,10 +21,9 @@
     <LinearLayout
         android:id="@+id/clMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:fitsSystemWindows="true"
         android:gravity="center"
-        android:layout_marginBottom="40dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         tools:ignore="MissingConstraints">

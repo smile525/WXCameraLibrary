@@ -1,12 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerInParent="true"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:background="#00000020">
+    android:background="#00000020"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <!-- 假如360的屏幕宽度 144的左右边距 126 38 -->
 
@@ -16,10 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="提示文本" />
+        tools:text="" />
 
     <!-- 右侧的分段录制 -->
     <TextView
@@ -29,79 +25,51 @@
         android:text="@string/z_multi_library_default_to_record"
         android:textColor="@color/white"
         android:textSize="8sp"
+        android:visibility="gone"
         app:drawableTopCompat="@drawable/ic_record_section_24"
-        app:layout_constraintBottom_toBottomOf="@+id/btnClickOrLong"
-        app:layout_constraintEnd_toStartOf="@+id/guideline88"
-        app:layout_constraintStart_toStartOf="@+id/guideline72"
-        app:layout_constraintTop_toTopOf="@+id/btnClickOrLong"
         tools:ignore="SmallSp" />
 
-    <!-- 左侧的取消按钮  -->
-    <com.zhongjh.circularprogressview.CircularProgress
-        android:id="@+id/btnCancel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/btnClickOrLong"
-        app:layout_constraintEnd_toStartOf="@+id/guideline28"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toTopOf="@+id/btnClickOrLong"
-        app:operationButtonZhongjhType="confirm"
-        tools:visibility="visible" />
 
-    <!-- 右侧的确认按钮  -->
-    <com.zhongjh.circularprogressview.CircularProgress
-        android:id="@+id/btnConfirm"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/btnClickOrLong"
-        app:layout_constraintEnd_toStartOf="@+id/guideline88"
-        app:layout_constraintStart_toStartOf="@+id/guideline72"
-        app:layout_constraintTop_toTopOf="@+id/btnClickOrLong"
-        app:operationButtonZhongjhType="confirm"
-        tools:visibility="visible" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
 
-    <!-- 中间的操作按钮 -->
-    <com.smile525.albumcamerarecorder.widget.clickorlongbutton.ClickOrLongButton
-        android:id="@+id/btnClickOrLong"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:focusable="true"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTip" />
+        <!-- 中间的操作按钮 -->
+        <com.smile525.albumcamerarecorder.widget.clickorlongbutton.ClickOrLongButton
+            android:id="@+id/btnClickOrLong"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:focusable="true" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.31" />
+            <!-- 左侧的取消按钮  -->
+            <ImageView
+                android:id="@+id/btnCancel"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/t_icon_return"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
+            <!-- 右侧的确认按钮  -->
+            <ImageView
+                android:id="@+id/btnConfirm"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="80dp"
+                android:src="@mipmap/t_icon_finish"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline72"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.69" />
+        </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline88"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.92" />
+    </RelativeLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

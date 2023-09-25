@@ -312,7 +312,7 @@ public abstract class BaseCameraFragment
         }
 
         // 处理图片、视频等需要进度显示
-        getPhotoVideoLayout().getViewHolder().btnConfirm.setProgressMode(true);
+//        getPhotoVideoLayout().getViewHolder().btnConfirm.setProgressMode(true);
 
         // 初始化cameraView,判断是否开启录制视频，如果开启就开启录制声音
         if (!SelectableUtils.videoValid()) {
@@ -518,13 +518,13 @@ public abstract class BaseCameraFragment
                 Log.d(TAG, "stopProgress " + getState().toString());
                 getCameraStateManagement().stopProgress();
                 // 重置按钮
-                getPhotoVideoLayout().resetConfirm();
+//                getPhotoVideoLayout().resetConfirm();
             }
 
             @Override
             public void doneProgress() {
                 Log.d(TAG, "doneProgress " + getState().toString());
-                getPhotoVideoLayout().resetConfirm();
+//                getPhotoVideoLayout().resetConfirm();
             }
         });
     }
@@ -535,7 +535,7 @@ public abstract class BaseCameraFragment
     private void initPvLayoutRecordListener() {
         getPhotoVideoLayout().setRecordListener(tag -> {
             getCameraVideoPresenter().setSectionRecord("1".equals(tag));
-            getPhotoVideoLayout().setProgressMode(true);
+//            getPhotoVideoLayout().setProgressMode(true);
         });
     }
 
@@ -647,7 +647,7 @@ public abstract class BaseCameraFragment
         LogUtil.i("CameraLayout destroy");
         getCameraPicturePresenter().onDestroy(isCommit);
         getCameraVideoPresenter().onDestroy(isCommit);
-        getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
+//        getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
         getCameraView().destroy();
         // 记忆模式
         flashSaveCache();
@@ -797,12 +797,12 @@ public abstract class BaseCameraFragment
     @Override
     public void showProgress() {
         // 执行等待动画
-        getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(1);
+//        getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(1);
     }
 
     @Override
     public void setProgress(int progress) {
-        getPhotoVideoLayout().getViewHolder().btnConfirm.addProgress(progress);
+//        getPhotoVideoLayout().getViewHolder().btnConfirm.addProgress(progress);
     }
 
     /**
@@ -838,9 +838,6 @@ public abstract class BaseCameraFragment
         // 隐藏拍照按钮
         getPhotoVideoLayout().getViewHolder().btnClickOrLong.setVisibility(View.INVISIBLE);
 
-        // 隐藏拍照提示
-        getPhotoVideoLayout().getViewHolder().tvTip.setVisibility(View.GONE);
-        
         // 隐藏拍照按钮
         if (getCloseView() != null) {
             getCloseView().setVisibility(View.GONE);
@@ -875,7 +872,7 @@ public abstract class BaseCameraFragment
             }
         }
 
-        getPhotoVideoLayout().startTipAlphaAnimation();
+        getPhotoVideoLayout().endTipAlphaAnimation();
         getPhotoVideoLayout().startOperationBtnAnimatorMulti();
 
         // 重置按钮，因为每次点击，都会自动关闭
@@ -932,6 +929,7 @@ public abstract class BaseCameraFragment
 
         // 恢复底部按钮
         getPhotoVideoLayout().reset();
+
         // 恢复底部按钮操作模式
         initPvLayoutButtonFeatures();
 
@@ -956,7 +954,7 @@ public abstract class BaseCameraFragment
         getPhotoVideoLayout().setConfirmEnable(true);
         getPhotoVideoLayout().setClickOrLongEnable(true);
         // 重置按钮进度
-        getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
+//        getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
     }
 
     /**

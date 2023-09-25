@@ -39,7 +39,7 @@ public class VideoMultipleIn extends StateMode {
         // 如果是录制中则暂停视频
         getCameraFragment().getCameraVideoPresenter().setBreakOff(true);
         getCameraFragment().getCameraView().stopVideo();
-        getCameraFragment().getPhotoVideoLayout().resetConfirm();
+//        getCameraFragment().getPhotoVideoLayout().resetConfirm();
         getCameraFragment().getPhotoVideoLayout().getViewHolder().btnClickOrLong.selectionRecordRollBack();
 
         if (getCameraFragment().getCameraVideoPresenter().getVideoPaths().size() <= 0) {

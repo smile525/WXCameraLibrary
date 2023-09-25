@@ -37,7 +37,7 @@ object CameraSpec {
     /**
      * 切换前置/后置摄像头图标资源
      */
-    var imageSwitch = R.drawable.ic_camera_zjh
+    var imageSwitch = R.mipmap.ti_capture
 
     /**
      * 闪光灯开启状态图标
@@ -141,7 +141,7 @@ object CameraSpec {
     private fun reset() {
         mimeTypeSet = null
         // 切换前置/后置摄像头图标资源
-        imageSwitch = R.drawable.ic_camera_zjh
+        imageSwitch = R.mipmap.ti_capture
         // 闪光灯开启状态图标
         imageFlashOn = R.drawable.ic_flash_on
         // 闪光灯关闭状态图标

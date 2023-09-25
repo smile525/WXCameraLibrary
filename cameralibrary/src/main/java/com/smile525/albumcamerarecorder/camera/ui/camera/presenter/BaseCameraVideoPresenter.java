@@ -134,29 +134,29 @@ public class BaseCameraVideoPresenter implements ICameraVideo {
             baseCameraFragment.getCameraSpec().getVideoMergeCoordinator().setVideoMergeListener(this.getClass(), new VideoEditListener() {
                 @Override
                 public void onFinish() {
-                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(100);
+//                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(100);
                     PreviewVideoActivity.startActivity(baseCameraFragment, previewVideoActivityResult, newSectionVideoPath);
                 }
 
                 @Override
                 public void onProgress(int progress, long progressTime) {
                     if (progress >= PROGRESS_MAX) {
-                        baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(99);
+//                        baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(99);
                     } else {
-                        baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(progress);
+//                        baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.setProgress(progress);
                     }
                 }
 
                 @Override
                 public void onCancel() {
                     // 重置按钮
-                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
+//                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
                 }
 
                 @Override
                 public void onError(@NotNull String message) {
                     // 重置按钮
-                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
+//                    baseCameraFragment.getPhotoVideoLayout().getViewHolder().btnConfirm.reset();
                 }
             });
         }
@@ -236,9 +236,9 @@ public class BaseCameraVideoPresenter implements ICameraVideo {
                 // 创建新的file
                 videoFile = videoMediaStoreCompat.createFile(1, true, "mp4");
                 // 如果是在已经合成的情况下继续拍摄，那就重置状态
-                if (!baseCameraFragment.getPhotoVideoLayout().getProgressMode()) {
-                    baseCameraFragment.getPhotoVideoLayout().resetConfirm();
-                }
+//                if (!baseCameraFragment.getPhotoVideoLayout().getProgressMode()) {
+//                    baseCameraFragment.getPhotoVideoLayout().resetConfirm();
+//                }
             }
         } else {
             FileUtil.deleteFile(videoFile);
@@ -254,7 +254,7 @@ public class BaseCameraVideoPresenter implements ICameraVideo {
     @Override
     public void removeVideoMultiple() {
         // 每次删除，后面都要重新合成,新合成的也删除
-        baseCameraFragment.getPhotoVideoLayout().resetConfirm();
+//        baseCameraFragment.getPhotoVideoLayout().resetConfirm();
         if (newSectionVideoPath != null) {
             FileUtil.deleteFile(newSectionVideoPath);
         }
