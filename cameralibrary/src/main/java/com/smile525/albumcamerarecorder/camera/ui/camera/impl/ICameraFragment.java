@@ -1,6 +1,7 @@
 package com.smile525.albumcamerarecorder.camera.ui.camera.impl;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.smile525.albumcamerarecorder.camera.entity.BitmapData;
@@ -47,11 +48,11 @@ public interface ICameraFragment {
     /**
      * 显示单图
      *
-     * @param bitmapData 显示单图数据源
+     * @param bitmap 显示单图数据源
      * @param file       显示单图的文件
      * @param uri        显示单图的uri
      */
-    void showSinglePicture(BitmapData bitmapData, File file, Uri uri);
+    void showSinglePicture(Bitmap bitmap, File file, Uri uri);
 
     /**
      * 显示多图

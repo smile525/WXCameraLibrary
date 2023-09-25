@@ -15,6 +15,7 @@ import static com.smile525.albumcamerarecorder.widget.clickorlongbutton.ClickOrL
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -823,13 +824,14 @@ public abstract class BaseCameraFragment
      * @param uri        显示单图的uri
      */
     @Override
-    public void showSinglePicture(BitmapData bitmapData, File file, Uri uri) {
+    public void showSinglePicture(Bitmap bitmapData, File file, Uri uri) {
         // 拍照  隐藏 闪光灯、右上角的切换摄像头
         setMenuVisibility(View.INVISIBLE);
         // 这样可以重置
         getSinglePhotoView().setZoomable(true);
         getSinglePhotoView().setVisibility(View.VISIBLE);
-        globalSpec.getImageEngine().loadUriImage(myContext, getSinglePhotoView(), bitmapData.getUri());
+        getSinglePhotoView().setImageBitmap(bitmapData);
+//        globalSpec.getImageEngine().loadUriImage(myContext, getSinglePhotoView(), bitmapData.getUri());
         getCameraView().close();
 
         // 设置当前模式是图片模式

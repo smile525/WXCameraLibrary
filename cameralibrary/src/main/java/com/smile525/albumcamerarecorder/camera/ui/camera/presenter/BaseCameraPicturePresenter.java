@@ -235,7 +235,7 @@ public class BaseCameraPicturePresenter
         } else {
             this.bitmapData.add(bitmapData);
             photoFile = file;
-            baseCameraFragment.showSinglePicture(bitmapData, file, uri);
+            baseCameraFragment.showSinglePicture(bitmap, file, uri);
         }
 
         // 回调接口：添加图片后剩下的相关数据
