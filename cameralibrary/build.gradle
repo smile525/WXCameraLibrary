@@ -56,7 +56,7 @@ allprojects {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.core:core-ktx:$rootProject.ext.ktx_version"
+    compileOnly "androidx.core:core-ktx:$rootProject.ext.ktx_version"
 
     implementation "androidx.recyclerview:recyclerview:$rootProject.ext.recyclerviewSdkVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompatSdkVersion"

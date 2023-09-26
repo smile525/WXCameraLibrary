@@ -52,7 +52,7 @@ ext {
 
     butterknifeVersion = '8.4.0'
 
-    ktx_version = '1.6.0'
+    ktx_version = '1.9.0'
 
     groupId = 'com.github.smile525'
     artifactId = 'WXCameraLibrary'
