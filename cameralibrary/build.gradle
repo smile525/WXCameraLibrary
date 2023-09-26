@@ -56,7 +56,7 @@ allprojects {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly "androidx.core:core-ktx:$rootProject.ext.ktx_version"
+//    implementation "androidx.core:core-ktx:$rootProject.ext.ktx_version"
 
     implementation "androidx.recyclerview:recyclerview:$rootProject.ext.recyclerviewSdkVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompatSdkVersion"
@@ -65,16 +65,21 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.ext.androidMaterialSdkVersion"
 
     //图片预览
-    api 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     // 图片
     compileOnly 'com.github.bumptech.glide:glide:3.7.0'
 
     // 拍摄、录像核心类 https://github.com/natario1/CameraView
-    api 'com.otaliastudios:cameraview:2.7.2'
+    implementation('com.otaliastudios:cameraview:2.7.2')  {
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-common"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+    }
 
     // 自制按钮进度 https://github.com/zhongjhATC/CircularProgressView
-    api 'com.github.zhongjhATC:CircularProgressView:1.8'
+    implementation 'com.github.zhongjhATC:CircularProgressView:1.8'
 
 }
 
