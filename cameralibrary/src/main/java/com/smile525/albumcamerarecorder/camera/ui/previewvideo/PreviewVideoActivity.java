@@ -307,11 +307,11 @@ public class PreviewVideoActivity extends AppCompatActivity {
         MediaExtraInfo mediaExtraInfo = MediaUtils.getVideoSize(getApplicationContext(), newFile.getPath());
         mLocalFile.setWidth(mediaExtraInfo.getWidth());
         mLocalFile.setHeight(mediaExtraInfo.getHeight());
-        Uri uri = MediaStoreUtils.displayToGallery(getApplicationContext(), newFile, MediaStoreUtils.MediaTypes.TYPE_VIDEO, mLocalFile.getDuration(),
-                mLocalFile.getWidth(), mLocalFile.getHeight(),
-                mVideoMediaStoreCompat.getSaveStrategy().getDirectory(), mVideoMediaStoreCompat);
+//        Uri uri = MediaStoreUtils.displayToGallery(getApplicationContext(), newFile, MediaStoreUtils.MediaTypes.TYPE_VIDEO, mLocalFile.getDuration(),
+//                mLocalFile.getWidth(), mLocalFile.getHeight(),
+//                mVideoMediaStoreCompat.getSaveStrategy().getDirectory(), mVideoMediaStoreCompat);
         // 加入相册后的最后是id，直接使用该id
-        mLocalFile.setId(MediaStoreUtils.getId(uri));
+//        mLocalFile.setId(MediaStoreUtils.getId(uri));
         mLocalFile.setPath(newFile.getPath());
         mLocalFile.setUri(mVideoMediaStoreCompat.getUri(newFile.getPath()));
         mLocalFile.setSize(newFile.length());

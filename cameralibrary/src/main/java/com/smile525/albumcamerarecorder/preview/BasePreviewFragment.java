@@ -763,12 +763,12 @@ public class BasePreviewFragment extends Fragment implements View.OnClickListene
                         public void onFinish() {
                             item.updateFile(mContext, mPictureMediaStoreCompat, item, finalNewFile, true);
                             // 如果是编辑过的加入相册
-                            if (item.getOldPath() != null) {
-                                Uri uri = MediaStoreUtils.displayToGallery(mContext, finalNewFile, MediaStoreUtils.MediaTypes.TYPE_VIDEO,
-                                        item.getDuration(), item.getWidth(), item.getHeight(),
-                                        mVideoMediaStoreCompat.getSaveStrategy().getDirectory(), mVideoMediaStoreCompat);
-                                item.setId(MediaStoreUtils.getId(uri));
-                            }
+//                            if (item.getOldPath() != null) {
+//                                Uri uri = MediaStoreUtils.displayToGallery(mContext, finalNewFile, MediaStoreUtils.MediaTypes.TYPE_VIDEO,
+//                                        item.getDuration(), item.getWidth(), item.getHeight(),
+//                                        mVideoMediaStoreCompat.getSaveStrategy().getDirectory(), mVideoMediaStoreCompat);
+//                                item.setId(MediaStoreUtils.getId(uri));
+//                            }
                             Log.d(TAG, "不存在新建文件");
                         }
 
@@ -813,12 +813,12 @@ public class BasePreviewFragment extends Fragment implements View.OnClickListene
         }
         item.updateFile(mContext, mPictureMediaStoreCompat, item, newFile, isCompress);
         // 如果是编辑过的加入相册
-        if (item.getOldPath() != null) {
-            Uri uri = MediaStoreUtils.displayToGallery(mContext, newFile, MediaStoreUtils.MediaTypes.TYPE_PICTURE,
-                    item.getDuration(), item.getWidth(), item.getHeight(),
-                    mPictureMediaStoreCompat.getSaveStrategy().getDirectory(), mPictureMediaStoreCompat);
-            item.setId(MediaStoreUtils.getId(uri));
-        }
+//        if (item.getOldPath() != null) {
+//            Uri uri = MediaStoreUtils.displayToGallery(mContext, newFile, MediaStoreUtils.MediaTypes.TYPE_PICTURE,
+//                    item.getDuration(), item.getWidth(), item.getHeight(),
+//                    mPictureMediaStoreCompat.getSaveStrategy().getDirectory(), mPictureMediaStoreCompat);
+//            item.setId(MediaStoreUtils.getId(uri));
+//        }
     }
 
     /**

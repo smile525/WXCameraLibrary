@@ -293,17 +293,17 @@ public class BaseCameraPicturePresenter
                         }
                     });
                 }
-                for (LocalFile item : newFiles) {
-                    if (item.getPath() != null) {
-                        // 加入图片到android系统库里面
-                        Uri uri = MediaStoreUtils.displayToGallery(baseCameraFragment.getMyContext(), new File(item.getPath()), MediaStoreUtils.MediaTypes.TYPE_PICTURE, -1, item.getWidth(), item.getHeight(),
-                                pictureMediaStoreCompat.getSaveStrategy().getDirectory(), pictureMediaStoreCompat);
-                        // 加入相册后的最后是id，直接使用该id
-                        item.setId(MediaStoreUtils.getId(uri));
-                        item.setMimeType(MimeType.JPEG.getMimeTypeName());
-                        item.setUri(pictureMediaStoreCompat.getUri(item.getPath()));
-                    }
-                }
+//                for (LocalFile item : newFiles) {
+//                    if (item.getPath() != null) {
+//                        // 加入图片到android系统库里面
+//                        Uri uri = MediaStoreUtils.displayToGallery(baseCameraFragment.getMyContext(), new File(item.getPath()), MediaStoreUtils.MediaTypes.TYPE_PICTURE, -1, item.getWidth(), item.getHeight(),
+//                                pictureMediaStoreCompat.getSaveStrategy().getDirectory(), pictureMediaStoreCompat);
+//                        // 加入相册后的最后是id，直接使用该id
+//                        item.setId(MediaStoreUtils.getId(uri));
+//                        item.setMimeType(MimeType.JPEG.getMimeTypeName());
+//                        item.setUri(pictureMediaStoreCompat.getUri(item.getPath()));
+//                    }
+//                }
                 // 执行完成
                 return newFiles;
             }
