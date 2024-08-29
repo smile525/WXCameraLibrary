@@ -169,7 +169,7 @@ public class BaseCameraPicturePresenter
                 FileUtil.deleteFile(photoFile);
             }
             // 删除多个图片
-            if (photoAdapter.getListData() != null) {
+            if (photoAdapter != null && photoAdapter.getListData() != null) {
                 for (BitmapData bitmapData : photoAdapter.getListData()) {
                     FileUtil.deleteFile(bitmapData.getPath());
                 }
@@ -189,7 +189,7 @@ public class BaseCameraPicturePresenter
         // 开启才能执行别的事件, 如果已经有分段视频，则不允许拍照了
         if (baseCameraFragment.getCameraView().isOpened() && baseCameraFragment.getCameraVideoPresenter().getVideoTimes().size() <= 0) {
             // 判断数量
-            if (photoAdapter.getItemCount() < SelectableUtils.getImageMaxCount()) {
+            if (photoAdapter != null && photoAdapter.getItemCount() < SelectableUtils.getImageMaxCount()) {
                 // 设置不能点击，防止多次点击报错
                 baseCameraFragment.getChildClickableLayout().setChildClickable(false);
                 // 判断如果是自动闪光灯模式便开启闪光灯

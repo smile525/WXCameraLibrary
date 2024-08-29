@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName '1.0.2'
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true // 添加多密度矢量图形
     }
@@ -76,7 +76,11 @@ dependencies {
         exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-common"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+        exclude group: "com.google.android.gms", module: "play-services-tasks"
     }
+
+    // play-services-tasks 安全版本
+    implementation 'com.google.android.gms:play-services-tasks:18.2.0'
 
     // 自制按钮进度 https://github.com/zhongjhATC/CircularProgressView
     implementation 'com.github.zhongjhATC:CircularProgressView:1.8'
