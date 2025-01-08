@@ -10,7 +10,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.3.1"
+        classpath 'com.android.tools.build:gradle:7.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,6 +25,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
         maven { url "https://jitpack.io" }
     }
 }
@@ -32,7 +33,7 @@ allprojects {
 ext {
 
     versionCode = 104
-    versionName = '1.0.4'
+    versionName = '1.0.5'
 
     androidCompileSdkVersion = 33
     androidBuildToolsVersion = '33.0.0'

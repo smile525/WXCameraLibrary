@@ -91,7 +91,7 @@
     <string name="z_multi_library_working_video_click_later">请勿频繁操作</string>
     <string name="z_multi_library_recording_error_roll_back_previous_paragraph">录制出错，回滚上一段</string>
 
-
+    <string name="ti_no_record_permission_hint">未开启麦克风，无法录制声音</string>
     <!-- endregion -->
 
 </resources>

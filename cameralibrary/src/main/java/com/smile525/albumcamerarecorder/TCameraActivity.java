@@ -5,14 +5,20 @@ import static androidx.core.content.PermissionChecker.PERMISSION_DENIED;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,18 +29,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.otaliastudios.cameraview.controls.Audio;
 import com.smile525.albumcamerarecorder.settings.GlobalSpec;
 import com.smile525.albumcamerarecorder.utils.HandleBackUtil;
 import com.smile525.albumcamerarecorder.utils.HandleOnKeyUtil;
 import com.smile525.common.utils.AppUtils;
 import com.smile525.common.utils.StatusBarUtils;
-import com.smile525.albumcamerarecorder.R;
 import com.smile525.albumcamerarecorder.camera.ui.camera.CameraFragment;
-import com.smile525.albumcamerarecorder.settings.GlobalSpec;
-import com.smile525.albumcamerarecorder.utils.HandleBackUtil;
-import com.smile525.albumcamerarecorder.utils.HandleOnKeyUtil;
-import com.smile525.common.utils.AppUtils;
-import com.smile525.common.utils.StatusBarUtils;
 
 import java.util.ArrayList;
 
@@ -75,6 +76,10 @@ public class TCameraActivity extends AppCompatActivity {
      * 是否弹出提示多次拒绝权限的dialog
      */
     private boolean mIsShowDialog;
+
+    private boolean hasRecordAudioPermission = true;
+
+    private boolean mAlreadyShowAudioPermission = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,38 +159,77 @@ public class TCameraActivity extends AppCompatActivity {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                     if (grantResults[i] == PERMISSION_DENIED) {
                         permissionsLength++;
+                        if (permissions[i].equals(Manifest.permission.RECORD_AUDIO)) {
+                            hasRecordAudioPermission = false;
+                        }
                     }
                 }
             }
+            // : 2025/1/8 判断是否只有录音权限未授权
+            if (!hasRecordAudioPermission && permissionsLength == 1) {
+                if (mAlreadyShowAudioPermission) {
+                    return;
+                }
+                showRecordAudioHintDialog();
+                return;
+            }
             // 至少一个不再提醒
             if (permissionsLength > 0) {
+
+                // 获取 LayoutInflater 来加载自定义布局
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.ti_camera_custom_dialog_layout, null);
+
+                // 获取自定义布局中的控件
+                TextView dialogTitle = customView.findViewById(R.id.dialog_title);
+                TextView dialogContent = customView.findViewById(R.id.dialog_message);
+                TextView positiveButton = customView.findViewById(R.id.dialog_positive_button);
+                TextView negativeButton = customView.findViewById(R.id.dialog_negative_button);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(TCameraActivity.this, R.style.MyAlertDialogStyle);
-                builder.setPositiveButton(getString(R.string.z_multi_library_setting), (dialog, which) -> {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.fromParts("package", getPackageName(), null));
-                    TCameraActivity.this.startActivityForResult(intent, REQUEST_CODE_SETTING);
-                    mIsShowDialog = false;
-                });
-                builder.setNegativeButton(getString(R.string.z_multi_library_cancel), (dialog, which) -> {
-                    dialog.dismiss();
-                    TCameraActivity.this.finish();
-                });
+                builder.setView(customView);
 
                 // 获取app名称
                 String appName = AppUtils.getAppName(getApplicationContext());
                 if (TextUtils.isEmpty(appName)) {
-                    builder.setMessage(getString(R.string.permission_has_been_set_and_will_no_longer_be_asked));
+                    dialogContent.setText(getString(R.string.permission_has_been_set_and_will_no_longer_be_asked));
                 } else {
                     String toSettingTipStr = getString(R.string.z_multi_library_in_settings_apply) +
                             appName +
                             getString(R.string.z_multi_library_enable_storage_and_camera_permissions_for_normal_use_of_related_functions);
-                    builder.setMessage(toSettingTipStr);
+                    dialogContent.setText(toSettingTipStr);
                 }
-                builder.setTitle(getString(R.string.z_multi_library_hint));
-                builder.setOnDismissListener(dialog12 -> mIsShowDialog = false);
+
+                dialogTitle.setText(getString(R.string.z_multi_library_hint));
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        mIsShowDialog = false;
+                    }
+                });
                 Dialog dialog = builder.create();
                 dialog.setCanceledOnTouchOutside(false);
+                positiveButton.setText(getString(R.string.z_multi_library_setting));
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.fromParts("package", getPackageName(), null));
+                        TCameraActivity.this.startActivityForResult(intent, REQUEST_CODE_SETTING);
+                        mIsShowDialog = false;
+                    }
+                });
+
+                negativeButton.setText(getString(R.string.z_multi_library_cancel));
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        TCameraActivity.this.finish();
+                    }
+                });
                 dialog.setOnKeyListener((dialog1, keyCode, event) -> {
                     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
                         finish();
@@ -214,6 +258,67 @@ public class TCameraActivity extends AppCompatActivity {
         }
     }
 
+    private void showRecordAudioHintDialog() {
+
+        // 获取 LayoutInflater 来加载自定义布局
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.ti_camera_custom_dialog_layout, null);
+
+        // 获取自定义布局中的控件
+        TextView dialogTitle = customView.findViewById(R.id.dialog_title);
+        TextView tvContent = customView.findViewById(R.id.dialog_message);
+        TextView positiveButton = customView.findViewById(R.id.dialog_positive_button);
+        TextView negativeButton = customView.findViewById(R.id.dialog_negative_button);
+
+        // 设置自定义文本内容
+        dialogTitle.setText("麦克风权限未开启");
+        positiveButton.setText("去设置");
+        negativeButton.setText("继续拍摄");
+
+        // 获取app名称
+        String appName = AppUtils.getAppName(getApplicationContext());
+        if (TextUtils.isEmpty(appName)) {
+            // 设置自定义文本内容
+            tvContent.setText(getString(R.string.permission_has_been_set_and_will_no_longer_be_asked));
+        } else {
+            String toSettingTipStr = "无法录制声音，前往“设置>应用>" + appName + ">权限\"中打开麦克风权限。";
+            // 设置自定义文本内容
+            tvContent.setText(toSettingTipStr);
+        }
+
+        // 创建 AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(customView);  // 设置自定义布局
+        builder.setCancelable(true);   // 点击外部区域是否可以取消
+
+        // 创建并显示 AlertDialog
+        AlertDialog dialog = builder.create();
+        // 设置按钮的点击事件
+        positiveButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.fromParts("package", getPackageName(), null));
+            TCameraActivity.this.startActivityForResult(intent, REQUEST_CODE_SETTING);
+            mIsShowDialog = false;
+        });
+        negativeButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            // 没有所需要请求的权限，就进行初始化
+            init(null);
+            mAlreadyShowAudioPermission = true;
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnKeyListener((dialog1, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+                finish();
+            }
+            return false;
+        });
+        dialog.show();
+        mIsShowDialog = true;
+    }
+
     /**
      * 初始化，在权限全部通过后才进行该初始化
      *
@@ -221,15 +326,27 @@ public class TCameraActivity extends AppCompatActivity {
      */
     private void init(Bundle savedInstanceState) {
         if (!mIsInit) {
-            // TODO: 2023/8/30 加载相机页面
+            // : 2023/8/30 加载相机页面
             //获取管理者
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             //开启事务
             FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
             //碎片
             CameraFragment cameraFragment = CameraFragment.newInstance();
+
             //提交事务
             fragmentTransaction.add(R.id.fl_camera_view, cameraFragment).commit();
+
+            if (!hasRecordAudioPermission) {
+                //关闭录制声音
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        cameraFragment.getCameraView().setAudio(Audio.OFF);
+                    }
+                }, 50);
+            }
+
             mIsInit = true;
         }
     }
@@ -261,39 +378,76 @@ public class TCameraActivity extends AppCompatActivity {
             // 动态消息
             StringBuilder message = new StringBuilder();
             message.append(getString(R.string.z_multi_library_to_use_this_feature));
+            int permissionsLength = 0;
             for (String item : needPermissions) {
                 switch (item) {
                     case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                    case Manifest.permission.READ_MEDIA_IMAGES:
                         message.append(getString(R.string.z_multi_library_file_read_and_write_permission_to_read_and_store_related_files));
+                        permissionsLength++;
                         break;
                     case Manifest.permission.RECORD_AUDIO:
                         // 弹窗提示为什么要请求这个权限
                         message.append(getString(R.string.z_multi_library_record_permission_to_record_sound));
+                        hasRecordAudioPermission = false;
+                        permissionsLength++;
                         break;
                     case Manifest.permission.CAMERA:
                         // 弹窗提示为什么要请求这个权限
                         message.append(getString(R.string.z_multi_library_record_permission_to_shoot));
+                        permissionsLength++;
                         break;
                     default:
                         break;
                 }
             }
 
+            // : 2025/1/8 判断是否只有录音权限未授权
+            if (!hasRecordAudioPermission && permissionsLength == 1) {
+                if (mAlreadyShowAudioPermission) {
+                    return;
+                }
+                showRecordAudioHintDialog();
+                return;
+            }
+
+            // 获取 LayoutInflater 来加载自定义布局
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View customView = inflater.inflate(R.layout.ti_camera_custom_dialog_layout, null);
+
+            // 获取自定义布局中的控件
+            TextView dialogTitle = customView.findViewById(R.id.dialog_title);
+            TextView dialogContent = customView.findViewById(R.id.dialog_message);
+            TextView positiveButton = customView.findViewById(R.id.dialog_positive_button);
+            TextView negativeButton = customView.findViewById(R.id.dialog_negative_button);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(TCameraActivity.this, R.style.MyAlertDialogStyle);
             // 弹窗提示为什么要请求这个权限
-            builder.setTitle(getString(R.string.z_multi_library_hint));
+            builder.setView(customView);
+            dialogTitle.setText(getString(R.string.z_multi_library_hint));
             message.append(getString(R.string.z_multi_library_Otherwise_it_cannot_run_normally_and_will_apply_for_relevant_permissions_from_you));
-            builder.setMessage(message.toString());
-            builder.setPositiveButton(getString(R.string.z_multi_library_ok), (dialog, which) -> {
-                dialog.dismiss();
-                // 请求权限
-                requestPermissions2(needPermissions);
-            });
-            builder.setNegativeButton(getString(R.string.z_multi_library_cancel), (dialog, which) -> {
-                dialog.dismiss();
-                TCameraActivity.this.finish();
-            });
+            dialogContent.setText(message.toString());
+
             Dialog dialog = builder.create();
+
+            positiveButton.setText(getString(R.string.z_multi_library_ok));
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    // 请求权限
+                    requestPermissions2(needPermissions);
+                }
+            });
+
+            negativeButton.setText(getString(R.string.z_multi_library_cancel));
+            negativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    TCameraActivity.this.finish();
+                }
+            });
             dialog.setCanceledOnTouchOutside(false);
             dialog.setOnKeyListener((dialog1, keyCode, event) -> {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -342,6 +496,12 @@ public class TCameraActivity extends AppCompatActivity {
                 }
             }
 
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager
+                    .PERMISSION_GRANTED) {
+                if (!permissions.contains(Manifest.permission.RECORD_AUDIO)) {
+                    permissions.add(Manifest.permission.RECORD_AUDIO);
+                }
+            }
         }
         return permissions;
     }

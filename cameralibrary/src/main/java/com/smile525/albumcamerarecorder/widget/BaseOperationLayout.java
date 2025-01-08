@@ -5,24 +5,25 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.smile525.albumcamerarecorder.R;
 import com.smile525.albumcamerarecorder.camera.listener.ClickOrLongListener;
 import com.smile525.albumcamerarecorder.camera.util.LogUtil;
 import com.smile525.albumcamerarecorder.widget.clickorlongbutton.ClickOrLongButton;
 import com.smile525.common.listener.OnMoreClickListener;
-import com.zhongjh.circularprogressview.CircularProgress;
-import com.zhongjh.circularprogressview.CircularProgressListener;
-
 
 import java.util.ArrayList;
 
@@ -221,7 +222,11 @@ public abstract class BaseOperationLayout extends FrameLayout {
                 if (mClickOrLongListener != null) {
                     mClickOrLongListener.onLongClick();
                 }
-                startTipAlphaAnimation();
+                if (!isMicrophonePermissionGranted()) {
+                    setTip(getContext().getString(R.string.ti_no_record_permission_hint));
+                } else {
+                    startTipAlphaAnimation();
+                }
             }
 
             @Override
@@ -253,6 +258,13 @@ public abstract class BaseOperationLayout extends FrameLayout {
                 }
             }
         });
+    }
+
+
+    // 检查麦克风权限是否已经授权
+    private boolean isMicrophonePermissionGranted() {
+        return ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -427,9 +439,9 @@ public abstract class BaseOperationLayout extends FrameLayout {
     public void startTipAlphaAnimation() {
         LogUtil.e("隐藏提示");
 //        if (mIsFirst) {
-            ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
-            animatorTxtTip.setDuration(500);
-            animatorTxtTip.start();
+        ObjectAnimator animatorTxtTip = ObjectAnimator.ofFloat(viewHolder.tvTip, "alpha", 1f, 0f);
+        animatorTxtTip.setDuration(500);
+        animatorTxtTip.start();
 //            mIsFirst = false;
 //        }
     }
