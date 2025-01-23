@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,6 @@ public class TCameraActivity extends AppCompatActivity {
      */
     private boolean mIsShowDialog;
 
-    private boolean hasRecordAudioPermission = true;
 
     private boolean mAlreadyShowAudioPermission = false;
 
@@ -159,19 +159,8 @@ public class TCameraActivity extends AppCompatActivity {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                     if (grantResults[i] == PERMISSION_DENIED) {
                         permissionsLength++;
-                        if (permissions[i].equals(Manifest.permission.RECORD_AUDIO)) {
-                            hasRecordAudioPermission = false;
-                        }
                     }
                 }
-            }
-            // : 2025/1/8 判断是否只有录音权限未授权
-            if (!hasRecordAudioPermission && permissionsLength == 1) {
-                if (mAlreadyShowAudioPermission) {
-                    return;
-                }
-                showRecordAudioHintDialog();
-                return;
             }
             // 至少一个不再提醒
             if (permissionsLength > 0) {
@@ -305,8 +294,9 @@ public class TCameraActivity extends AppCompatActivity {
         negativeButton.setOnClickListener(v -> {
             dialog.dismiss();
             // 没有所需要请求的权限，就进行初始化
-            init(null);
             mAlreadyShowAudioPermission = true;
+            Log.e("TAG", "negativeButton dismiss init");
+            init(null);
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnKeyListener((dialog1, keyCode, event) -> {
@@ -326,6 +316,14 @@ public class TCameraActivity extends AppCompatActivity {
      */
     private void init(Bundle savedInstanceState) {
         if (!mIsInit) {
+            // : 2025/1/8 判断是否只有录音权限未授权
+            if (!isMicrophonePermissionGranted()) {
+                if (!mAlreadyShowAudioPermission) {
+                    showRecordAudioHintDialog();
+                    return;
+                }
+            }
+            Log.e("TAG", "start init");
             // : 2023/8/30 加载相机页面
             //获取管理者
             FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -337,15 +335,18 @@ public class TCameraActivity extends AppCompatActivity {
             //提交事务
             fragmentTransaction.add(R.id.fl_camera_view, cameraFragment).commit();
 
-            if (!hasRecordAudioPermission) {
-                //关闭录制声音
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isMicrophonePermissionGranted()) {
+                        Log.e("TAG", "init 关闭录制声音");
                         cameraFragment.getCameraView().setAudio(Audio.OFF);
+                    } else {
+                        Log.e("TAG", "init 开启录制声音");
+                        cameraFragment.getCameraView().setAudio(Audio.ON);
                     }
-                }, 50);
-            }
+                }
+            }, 50);
 
             mIsInit = true;
         }
@@ -364,6 +365,7 @@ public class TCameraActivity extends AppCompatActivity {
             requestPermissions2(needPermissions);
         } else {
             // 没有所需要请求的权限，就进行初始化
+            Log.e("TAG", "requestPermissions else init");
             init(savedInstanceState);
         }
     }
@@ -389,7 +391,6 @@ public class TCameraActivity extends AppCompatActivity {
                     case Manifest.permission.RECORD_AUDIO:
                         // 弹窗提示为什么要请求这个权限
                         message.append(getString(R.string.z_multi_library_record_permission_to_record_sound));
-                        hasRecordAudioPermission = false;
                         permissionsLength++;
                         break;
                     case Manifest.permission.CAMERA:
@@ -400,15 +401,6 @@ public class TCameraActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-            }
-
-            // : 2025/1/8 判断是否只有录音权限未授权
-            if (!hasRecordAudioPermission && permissionsLength == 1) {
-                if (mAlreadyShowAudioPermission) {
-                    return;
-                }
-                showRecordAudioHintDialog();
-                return;
             }
 
             // 获取 LayoutInflater 来加载自定义布局
@@ -458,6 +450,7 @@ public class TCameraActivity extends AppCompatActivity {
             dialog.show();
         } else {
             // 没有所需要请求的权限，就进行初始化
+            Log.e("TAG", "requestPermissionsDialog else init");
             init(null);
         }
     }
@@ -495,13 +488,6 @@ public class TCameraActivity extends AppCompatActivity {
                     permissions.add(Manifest.permission.CAMERA);
                 }
             }
-
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager
-                    .PERMISSION_GRANTED) {
-                if (!permissions.contains(Manifest.permission.RECORD_AUDIO)) {
-                    permissions.add(Manifest.permission.RECORD_AUDIO);
-                }
-            }
         }
         return permissions;
     }
@@ -515,4 +501,13 @@ public class TCameraActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(TCameraActivity.this, permissions.toArray(new String[0]), GET_PERMISSION_REQUEST);
     }
 
+    /**
+     * 检查麦克风权限是否已经授权
+     *
+     * @return
+     */
+    private boolean isMicrophonePermissionGranted() {
+        return ContextCompat.checkSelfPermission(TCameraActivity.this, android.Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED;
+    }
 }
