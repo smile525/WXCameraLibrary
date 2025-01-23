@@ -16,7 +16,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:keepScreenOn="true"
-        app:cameraAudio="on"
+        app:cameraAudio="off"
         app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"
         app:cameraEngine="camera1"
         app:cameraExperimental="true"

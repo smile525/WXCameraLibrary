@@ -295,6 +295,7 @@ public class TCameraActivity extends AppCompatActivity {
             dialog.dismiss();
             // 没有所需要请求的权限，就进行初始化
             mAlreadyShowAudioPermission = true;
+            Log.e("TAG", "negativeButton dismiss init");
             init(null);
         });
         dialog.setCanceledOnTouchOutside(false);
@@ -322,6 +323,7 @@ public class TCameraActivity extends AppCompatActivity {
                     return;
                 }
             }
+            Log.e("TAG", "start init");
             // : 2023/8/30 加载相机页面
             //获取管理者
             FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -333,15 +335,18 @@ public class TCameraActivity extends AppCompatActivity {
             //提交事务
             fragmentTransaction.add(R.id.fl_camera_view, cameraFragment).commit();
 
-            if (!isMicrophonePermissionGranted()) {
-                //关闭录制声音
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isMicrophonePermissionGranted()) {
+                        Log.e("TAG", "init 关闭录制声音");
                         cameraFragment.getCameraView().setAudio(Audio.OFF);
+                    } else {
+                        Log.e("TAG", "init 开启录制声音");
+                        cameraFragment.getCameraView().setAudio(Audio.ON);
                     }
-                }, 50);
-            }
+                }
+            }, 50);
 
             mIsInit = true;
         }
@@ -360,6 +365,7 @@ public class TCameraActivity extends AppCompatActivity {
             requestPermissions2(needPermissions);
         } else {
             // 没有所需要请求的权限，就进行初始化
+            Log.e("TAG", "requestPermissions else init");
             init(savedInstanceState);
         }
     }
@@ -444,7 +450,7 @@ public class TCameraActivity extends AppCompatActivity {
             dialog.show();
         } else {
             // 没有所需要请求的权限，就进行初始化
-            Log.e("TAG","requestPermissions else init");
+            Log.e("TAG", "requestPermissionsDialog else init");
             init(null);
         }
     }
@@ -497,6 +503,7 @@ public class TCameraActivity extends AppCompatActivity {
 
     /**
      * 检查麦克风权限是否已经授权
+     *
      * @return
      */
     private boolean isMicrophonePermissionGranted() {
