@@ -295,7 +295,6 @@ public class TCameraActivity extends AppCompatActivity {
             dialog.dismiss();
             // 没有所需要请求的权限，就进行初始化
             mAlreadyShowAudioPermission = true;
-            Log.e("TAG", "negativeButton dismiss init");
             init(null);
         });
         dialog.setCanceledOnTouchOutside(false);
@@ -323,7 +322,6 @@ public class TCameraActivity extends AppCompatActivity {
                     return;
                 }
             }
-            Log.e("TAG", "start init");
             // : 2023/8/30 加载相机页面
             //获取管理者
             FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -339,10 +337,8 @@ public class TCameraActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (!isMicrophonePermissionGranted()) {
-                        Log.e("TAG", "init 关闭录制声音");
                         cameraFragment.getCameraView().setAudio(Audio.OFF);
                     } else {
-                        Log.e("TAG", "init 开启录制声音");
                         cameraFragment.getCameraView().setAudio(Audio.ON);
                     }
                 }
@@ -365,7 +361,6 @@ public class TCameraActivity extends AppCompatActivity {
             requestPermissions2(needPermissions);
         } else {
             // 没有所需要请求的权限，就进行初始化
-            Log.e("TAG", "requestPermissions else init");
             init(savedInstanceState);
         }
     }
@@ -450,7 +445,6 @@ public class TCameraActivity extends AppCompatActivity {
             dialog.show();
         } else {
             // 没有所需要请求的权限，就进行初始化
-            Log.e("TAG", "requestPermissionsDialog else init");
             init(null);
         }
     }
@@ -469,9 +463,6 @@ public class TCameraActivity extends AppCompatActivity {
                 }
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED) {
                     permissions.add(Manifest.permission.READ_MEDIA_VIDEO);
-                }
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                    permissions.add(Manifest.permission.READ_MEDIA_AUDIO);
                 }
             } else {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
